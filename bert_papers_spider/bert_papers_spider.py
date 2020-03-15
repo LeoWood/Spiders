@@ -10,7 +10,12 @@ import time
 import random
 
 if __name__ == '__main__':
-    with open('source_code.html','r',encoding='utf-8') as f:
+    ## 保存源码
+    # with open('source_code_0206.html','w',encoding='utf-8') as f:
+    #     html = BeautifulSoup(requests.get('https://github.com/tomohideshibata/BERT-related-papers').content,'html.parser')
+    #     f.write(html.prettify())
+    #     exit()
+    with open('source_code_0206.html','r',encoding='utf-8') as f:
         html = BeautifulSoup(f,"html.parser")
         # print(html.find('div',class_="Box-body"))
         body = html.find('div',class_="Box-body")
@@ -28,17 +33,19 @@ if __name__ == '__main__':
                 for li in ne.find_all('li'):
                     a = li.find('a')
                     url = a['href'].replace('abs', 'pdf') + '.pdf'
-                    f_name = li.get_text().strip().replace('\n','').replace('\r','').replace(':','--').replace('"', '').replace('?',' ').replace("'","") + '.pdf'
+                    f_name = li.get_text().strip().replace('\n','').replace('\r','').replace(':','--').replace('"', '').replace('?',' ').replace("'","").replace('*','') + '.pdf'
 
                     if not os.path.exists(dir_name_1 + '/' + dir_name_2 + '/' + f_name):
+                        # print(dir_name_1 + '/' + dir_name_2 + '/' + f_name)
                         r = requests.get(url)
                         try:
                             with open(dir_name_1 + '/' + dir_name_2 + '/' + f_name, 'wb') as pdf:
                                 pdf.write(r.content)
+                                print(dir_name_1 + '/' + dir_name_2 + '/' + f_name, 'Done')
                         except:
                             print('error-------------------------------------------')
                             print(f_name)
                             print()
 
                         time.sleep(random.randint(1,5))
-                    print(f_name, 'Done')
+
