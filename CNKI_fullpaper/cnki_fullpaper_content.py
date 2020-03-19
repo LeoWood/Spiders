@@ -8,6 +8,8 @@ from selenium import webdriver
 import time
 import random
 import requests
+from ValidateCode import recognize
+from PIL import Image
 
 def get_driver():
     chromedriver = r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe'
@@ -16,14 +18,49 @@ def get_driver():
 
 def get_soup_from_url(url):
     driver = get_driver()
+    driver.set_window_size(1200, 800)
     # driver.get('https://www.cnki.net/')
     driver.get(url)
-    time.sleep(300)
-    soup = BeautifulSoup(driver.page_source,"html.parser")
+    time.sleep(3)
+    while '请输入验证码' in driver.page_source:
+        element = driver.find_element_by_id('vImg')
+        element.screenshot('temp.png')
 
-    response = requests.get(url,headers=get_headers())
-    soup = BeautifulSoup(response.content, "html.parser")
+        # # 保存截图
+        # driver.get_screenshot_as_file('temp.png')
+        #
+        # # 获取验证码位置
+        # element = driver.find_element_by_id('vImg')
+        # left = int(element.location['x'])
+        # top = int(element.location['y'])
+        # right = int(element.location['x'] + element.size['width'])
+        # bottom = int(element.location['y'] + element.size['height'])
+        #
+        # # 通过Image截取验证码
+        # im = Image.open('temp.png')
+        # im = im.crop((left, top, right, bottom))
+        # im = im.convert('RGB')
+        # im.save('code.jpg')
+
+        im = Image.open('temp.png')
+        im = im.convert('RGB')
+        im.save('code.jpg')
+        code = recognize('code.jpg')
+        print(code)
+        driver.find_element_by_id('vcode').send_keys(code)
+        driver.find_element_by_class_name('c_btn').click()
+        time.sleep(5)
+        if 'Object moved to' in driver.page_source:
+            driver.find_element_by_tag_name('a').click()
+            time.sleep(3)
+
+
+    source = driver.page_source
+    driver.quit()
+    soup = BeautifulSoup(source,"html.parser")
     print(soup.prettify())
+
+
     return soup
 
 def get_headers():
@@ -57,6 +94,8 @@ if __name__ == '__main__':
             i += 1
             url = line.strip()
             soup = get_soup_from_url(url)
+            with open(str(i) + '.html', 'w', encoding='utf-8') as fw:
+                fw.write(soup.prettify())
             content = get_content(soup)
             with open(str(i) + '.txt','w',encoding='utf-8') as fw:
                 [fw.write(con) for con in content]

@@ -4,3 +4,6 @@ Downstream task/
 *.txt
 *.xlsx
 *.log
+*.pth
+*.jpg
+*.png
