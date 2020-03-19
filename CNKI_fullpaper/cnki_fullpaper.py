@@ -40,7 +40,8 @@ def get_headers():
 def get_urls():
     with open('urls_61.txt','a',encoding='utf-8') as f:
         headers = get_headers()
-        for page_id in range(61,10000):
+        print(headers)
+        for page_id in range(81,10000):
             url = 'https://kns.cnki.net/kns/brief/brief.aspx?curpage={page_id}&RecordsPerPage=50&QueryID=3&ID=&turnpage=1&tpagemode=L&dbPrefix=SCDB&Fields=&DisplayMode=listmode&SortType=(%E5%8F%91%E8%A1%A8%E6%97%B6%E9%97%B4%2c%27TIME%27)+desc&PageName=ASP.brief_result_aspx&isinEn=1&'.format(page_id=page_id)
             response = requests.get(url, headers=headers)
             if '服务器上不存在此用户' in response.text:
@@ -59,7 +60,7 @@ def get_urls():
             for link in html_links:
                 f.write('https://kns.cnki.net' + link['href'] + '\n')
             print(page_id, ' Done')
-            secs = random.randint(90,150)
+            secs = random.randint(30,90)
             print(secs, 'later...')
             time.sleep(secs)
 
