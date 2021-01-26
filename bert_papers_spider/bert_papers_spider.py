@@ -10,12 +10,12 @@ import time
 import random
 
 if __name__ == '__main__':
-    ## 保存源码
-    # with open('source_code_0206.html','w',encoding='utf-8') as f:
+    # # 保存源码
+    # with open('source_code_0412.html','w',encoding='utf-8') as f:
     #     html = BeautifulSoup(requests.get('https://github.com/tomohideshibata/BERT-related-papers').content,'html.parser')
     #     f.write(html.prettify())
     #     exit()
-    with open('source_code_0206.html','r',encoding='utf-8') as f:
+    with open('source_code_0412.html','r',encoding='utf-8') as f:
         html = BeautifulSoup(f,"html.parser")
         # print(html.find('div',class_="Box-body"))
         body = html.find('div',class_="Box-body")
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         for ne in h2.next_siblings:
             if ne.name == 'h3' or ne.name == 'h2':
-                dir_name_2 = ne.get_text().strip()
+                dir_name_2 = ne.get_text().strip().replace('/',' ')
                 if not os.path.exists(dir_name_1 + '/' + dir_name_2):
                     os.mkdir(dir_name_1 + '/' + dir_name_2)
             if ne.name == 'ul':

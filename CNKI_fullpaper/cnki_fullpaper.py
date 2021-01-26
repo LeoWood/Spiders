@@ -38,10 +38,15 @@ def get_headers():
 
 
 def get_urls():
-    with open('urls_61.txt','a',encoding='utf-8') as f:
-        headers = get_headers()
-        print(headers)
-        for page_id in range(81,10000):
+    with open('urls_101.txt','a',encoding='utf-8') as f:
+        # headers = get_headers()
+        # print(headers)
+        for page_id in range(121,151):
+            if page_id % 10 == 1:
+                print('time to refresh..')
+                # time.sleep(30)
+                headers = get_headers()
+                time.sleep(300)
             url = 'https://kns.cnki.net/kns/brief/brief.aspx?curpage={page_id}&RecordsPerPage=50&QueryID=3&ID=&turnpage=1&tpagemode=L&dbPrefix=SCDB&Fields=&DisplayMode=listmode&SortType=(%E5%8F%91%E8%A1%A8%E6%97%B6%E9%97%B4%2c%27TIME%27)+desc&PageName=ASP.brief_result_aspx&isinEn=1&'.format(page_id=page_id)
             response = requests.get(url, headers=headers)
             if '服务器上不存在此用户' in response.text:
@@ -52,6 +57,7 @@ def get_urls():
             if '请输入验证码' in response.text:
                 print('需要输入验证码，延时刷新')
                 time.sleep(300)
+                headers = get_headers()
                 response = requests.get(url, headers=headers)
             soup = BeautifulSoup(response.content, "html.parser")
             # print(soup.prettify())
