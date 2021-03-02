@@ -4,7 +4,6 @@
 # Datetime: 2019/3/12 18:02
 
 from bs4 import BeautifulSoup
-import bs4
 import os
 # from selenium import webdriver
 # from selenium.webdriver.support.ui import WebDriverWait
@@ -39,11 +38,9 @@ def get_content(soup):
 
 
 if __name__ == "__main__":
-    with open('loss-sshrc.txt', 'r', encoding='utf-8') as f:
-        urls = ['http://www.outil.ost.uqam.ca/CRSH/Detail.aspx?Cle=' + line.strip() + '&Langue=2' for line in f.readlines()]
-    i = 18500
-    with open('results(SSHRC1.85w-2w).txt','a',encoding='utf-8') as fw:
-        for url in urls[18500:20000]:
+    with open('results(1-1w).txt','a',encoding='utf-8') as fw:
+        for i in range(1,100000):
+            url = 'http://www.outil.ost.uqam.ca/CRSH/Detail.aspx?Cle=' + str(i) + '&Langue=2'
             id_ = ''
             for c in url:
                 if c >= '\u0030' and c <= '\u0039':
@@ -59,7 +56,7 @@ if __name__ == "__main__":
             if 'Fiscal Year' not in data:
                 print(id_,' Not Found~~~')
                 # print(url)
-                time.sleep(1)
+                time.sleep(random.randint(1,3))
                 i += 1
                 print(i, 'Done')
                 continue
@@ -71,6 +68,6 @@ if __name__ == "__main__":
             fw.write(data + '\n')
             with open('html\\' + id_ + '_html.txt','w',encoding='utf-8') as f:
                 f.write(soup.prettify())
-            time.sleep(1)
+            time.sleep(random.randint(1,3))
             i += 1
             print(i, ' Done')
