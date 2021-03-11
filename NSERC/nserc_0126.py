@@ -27,7 +27,7 @@ chromedriver = r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.e
 os.environ["webdriver.chrome.driver"] = chromedriver
 driver = webdriver.Ie(chromedriver)
 
-with open('result_670028--695052.txt', 'a', encoding='utf-8') as f:
+with open('result_670028--695052_add_id_url.txt', 'a', encoding='utf-8') as f:
     for i in tqdm(range(670028, 695052)):
         data = {}
         url = 'http://www.nserc-crsng.gc.ca/ase-oro/Details-Detailles_eng.asp?id=' + str(i)
@@ -38,6 +38,11 @@ with open('result_670028--695052.txt', 'a', encoding='utf-8') as f:
         soup = BeautifulSoup(driver.page_source, "html.parser")
 
         data['title'] = soup.find('div',id='main-container-1col').find('h2').string
+
+        data['id'] = str(i)
+        data['url'] = url
+
+
         # 解析表格
         tds = soup.find_all('td')
         for j in [2, 4, 6, 8, 10, 12, 14,
