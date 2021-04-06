@@ -38,8 +38,8 @@ def get_content(soup):
 
 
 if __name__ == "__main__":
-    with open('results(1-1w).txt','a',encoding='utf-8') as fw:
-        for i in range(1,100000):
+    with open('results(10w-20w).txt','a',encoding='utf-8') as fw:
+        for i in range(100001,200000):
             url = 'http://www.outil.ost.uqam.ca/CRSH/Detail.aspx?Cle=' + str(i) + '&Langue=2'
             id_ = ''
             for c in url:
@@ -66,7 +66,7 @@ if __name__ == "__main__":
             # print(data)
             data = json.dumps(data)
             fw.write(data + '\n')
-            with open('html\\' + id_ + '_html.txt','w',encoding='utf-8') as f:
+            with open('html_10w_20w\\' + id_ + '_html.txt','w',encoding='utf-8') as f:
                 f.write(soup.prettify())
             time.sleep(random.randint(1,3))
             i += 1
